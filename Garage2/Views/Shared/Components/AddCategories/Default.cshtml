@@ -1,0 +1,143 @@
+﻿@model ServiceViewModel
+
+<div class="container">
+    <div class="row">
+        <div class="col-6">
+            <h4>Create Category</h4>
+            <hr />
+            <form>
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                <label asp-for="ServiceCategory.Category" class="form-label">Datalist example</label>
+                <input asp-for="ServiceCategory.Category" class="form-control" list="datalistOptions" placeholder="Type to search..." name="cat" asp-items=@(new SelectList(Model.ServiceCategoriesEnumerable,"CategoryId","Category")) required>
+                <datalist id="datalistOptions">
+                    <option value="" />
+                </datalist>
+
+                <div class="form-group">
+                    <label asp-for="ServiceItem.Item" class="control-label"></label>
+                    <input asp-for="ServiceItem.Item" class="form-control" required />
+                    <span asp-validation-for="ServiceItem.Item" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <button id="createCategoryItems" type="submit" class="btn btn-outline-primary" asp-controller="Services" asp-action="CreateCategory">Create</button>
+                </div>
+            </form>
+        </div>
+    
+    </div>
+</div>
+
+
+<br />
+
+<div class="container">
+    <form>
+        <div class="row">
+            <div class="col">
+                <h4>Service Categories</h4>
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+
+                            <th scope="col">Category Id</th>
+                            <th scope="col">Category</th>
+                            <th scope="col">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.ServiceCategoriesEnumerable)
+                        {
+                            <tr>
+                                <td>@item.CategoryId</td>
+                                <td>@item.Category</td>
+
+                                <td>
+                                    <a class="btn btn-outline-primary" type="submit" role="button" asp-controller="Services" asp-action="EditCategory" asp-route-id="@item.CategoryId">Edit</a>
+
+                                </td>
+
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+
+            <hr width="1" size="500">
+
+            <div class="col">
+                <h4>Service Items</h4>
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th scope="col">Items Id</th>
+                            <th scope="col">Items</th>
+                            <th scope="col">Category</th>
+                            <th scope="col">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.ServiceItemsEnumerable)
+                        {
+                            <tr>
+                                <td>@item.ItemId</td>
+                                <td>@item.Item</td>
+                                <td>@item.Category</td>
+                                <td>
+                                    <a class="btn btn-outline-primary" type="submit" role="button" asp-controller="Services" asp-action="EditItem" asp-route-id="@item.ItemId">Edit</a>
+
+                                </td>
+
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+    </form>
+</div>
+
+
+
+
+
+
+
+
+
+
+    @*@await Component.InvokeAsync("EditCategories")*@
+    <!--<form method="post" asp-controller="Services" asp-action="EditCategory">
+        <table id="allServices" class="table table-hover">
+            <thead>
+                <tr>
+                    <th scope="col">Id</th>
+                    <th scope="col">Category Id</th>
+                    <th scope="col">Category</th>
+                    <th scope="col">ItemId</th>
+                    <th scope="col">Item</th>
+                    <th scope="col">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.CategoryItemsEnumerable)
+                {
+                    <tr>
+                        <td>@item.Id</td>
+                        <td>@item.CategoryId</td>
+                        <td>@item.Category</td>
+                        <td>@item.ItemId</td>
+                        <td>@item.Items</td>
+                        <td>
+                            <a class="btn btn-outline-primary" type="submit" role="button" asp-controller="Services" asp-action="EditCategory" asp-route-id="@item.Id">Edit</a>
+
+                        </td>
+
+                    </tr>
+                }
+
+            </tbody>
+        </table>
+    </form>-->
+

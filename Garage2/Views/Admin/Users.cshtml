@@ -1,0 +1,46 @@
+﻿@model IEnumerable<AppUser>
+
+
+@{
+    ViewData["Title"] = "Users";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Users</h1>
+
+@if (Model.Any())
+{
+    <table class="table table-hover" id="userTable">
+        <thead>
+            <tr>
+                <th scope="col">Id</th>
+                <th scope="col">First Name</th>
+                <th scope="col">Last Name</th>
+                <th scope="col">Email</th>
+                <th scope="col">Phone Number</th>
+                <th scope="col">Licence Plate</th>
+                <th scope="col">Role</th>
+                <th scope="col">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var user in Model )
+            {
+            <tr>
+                <td>@user.Id</td>
+                <td>@user.UserName</td>
+                <td>@user.LastName</td>
+                <td>@user.Email</td>
+                <td>@user.PhoneNumber</td>
+                <td>@user.LicencePlate</td>
+                <td>@user.RoleName</td>
+                <td><a class="btn btn-outline-primary" asp-controller="admin" asp-action="EditUser" asp-route-id="@user.Id" role="button">Edit</a></td>
+            </tr>
+            }
+        </tbody>
+    </table>
+
+}
+
+
+

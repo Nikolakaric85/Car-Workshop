@@ -1,0 +1,42 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Garage</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/css/bootstrap-select.min.css">      <!--https://developer.snapappointments.com/bootstrap-select/-->
+</head>
+<body>
+    <header>
+        @await Html.PartialAsync("_NavBar");
+    </header>
+    <div class="container">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+    <!-- Modal placeholder -->
+    <div id="modal-placeholder"></div>
+
+    @{await Html.RenderPartialAsync("_RegisterModalPartialView", new RegisterViewModel());}  <!-- ima i dalje problem kada se ode na user stranicu nece da radi login i register -->
+
+
+    @*@{await Html.RenderPartialAsync("_LoginModalPartialView", new LoginViewModel());}*@
+
+    
+
+    <footer class="border-top footer text-muted">
+        <div class="container">
+            &copy; 2020 - Garage2 - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+        </div>
+    </footer>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/js/bootstrap-select.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

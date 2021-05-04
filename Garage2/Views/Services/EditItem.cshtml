@@ -1,0 +1,37 @@
+﻿@model ServiceItem
+
+<div class="container">
+    <div class="row">
+        <div class="col-6">
+            <h4>Edit Services Category or Item</h4>
+            <hr />
+            <form>
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                <div class="form-group">
+                    <label asp-for="ItemId" class="control-label"></label>
+                    <input asp-for="ItemId" class="form-control" readonly />
+                    <span asp-validation-for="ItemId" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Category" class="control-label"></label>
+                    <input asp-for="Category" class="form-control" readonly />
+                    <span asp-validation-for="Category" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Item" class="control-label"></label>
+                    <input asp-for="Item" class="form-control" />
+                    <span asp-validation-for="Item" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <button id="createCategoryItems" type="submit" class="btn btn-outline-primary" asp-controller="Services" asp-action="UpdateItem">Update</button>
+                    <button type="submit" onclick="return confirm('Are you sure that you wanna delete this item? @Model.Item')" 
+                            class="btn btn-outline-danger" asp-controller="Services" asp-action="DeleteItem" asp-route-id="@Model.ItemId">Delete</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

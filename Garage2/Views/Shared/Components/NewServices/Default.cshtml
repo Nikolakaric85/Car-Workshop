@@ -1,0 +1,72 @@
+﻿@model ServiceViewModel
+
+<div class="container">
+    <form>
+        <div class="row">
+            <div class="col-sm">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group">
+                    <label asp-for="Service.ServiceDate" class="control-label"></label>
+                    <input asp-for="Service.ServiceDate" class="form-control" />
+                    <span asp-validation-for="Service.ServiceDate" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Service.Mileage" class="control-label"></label>
+                    <input asp-for="Service.Mileage" class="form-control" />
+                    <span asp-validation-for="Service.Mileage" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="col-sm">
+
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                <div class="form-group">
+                    <div class="col-sm">
+                        <label class="control-label">Service Items</label>
+                        <select id="select2" class="selectpicker" multiple name="array" asp-items="@ViewBag.CategoryItems">
+                             
+                        </select>
+                    </div>
+                 </div>
+
+
+                <div class="form-group">
+                    <label asp-for="Service.ServiceCost" class="control-label"></label>
+                    <input asp-for="Service.ServiceCost" class="form-control" />
+                    <span asp-validation-for="Service.ServiceCost" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="col-sm">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group">
+                    <label for="Service.Notes">Notes</label>
+                    <textarea asp-for="Service.Notes" class="form-control"></textarea>
+                    <span asp-validation-for="Service.Notes" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <button id="AddNewService" type="submit"  class="btn btn-outline-primary" asp-controller="Services" asp-action="AddNewService" >Create</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+
+@*
+    <div class="form-group">
+    <div class="col-sm">
+        <label class="control-label">Service Items</label>
+
+
+        <select id="select2" class="selectpicker" multiple name="array" asp-items=@(new MultiSelectList(Model.ServiceCategoriesEnumerable,"Category","Category"))>
+            <optgroup label="Picnic">
+                <option value="">Select Item</option>
+            </optgroup>
+        </select>
+
+    </div>
+</div>
+    
+    *@
