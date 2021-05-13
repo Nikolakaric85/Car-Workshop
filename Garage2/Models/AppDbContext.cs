@@ -43,6 +43,7 @@ namespace Garage2.Models
                 .WithMany(i => i.CategoryItems)
                 .HasForeignKey(c => c.ItemId);
 
+            //*********** USERS AND USERS ROLES **************//
 
             //Seeding a  'Administrator' role to AspNetRoles table
             builder.Entity<IdentityRole>().HasData(new IdentityRole
@@ -97,6 +98,140 @@ namespace Garage2.Models
                     UserId= "165412e8-86ab-4ade-b351-75494216e814"
                 });
 
+            //*********** CATEGORY AND ITEMS **************//
+
+            builder.Entity<ServiceCategory>().HasData(
+                new ServiceCategory
+                {
+                    CategoryId=1,
+                    Category= "Oil Change"
+                },
+                new ServiceCategory
+                {
+                    CategoryId=2,
+                    Category= "Timing Belt"
+                },
+                new ServiceCategory
+                {
+                    CategoryId=3,
+                    Category= "Wheel Aligment"
+                });
+
+            builder.Entity<ServiceItem>().HasData(
+                new ServiceItem
+                {
+                    ItemId=1,
+                    Item= "Air Filter",
+                    CategoryId=1,
+                    Category= "Oil Change",
+                },
+                new ServiceItem
+                {
+                    ItemId = 2,
+                    Item = "Oil Filter",
+                    CategoryId = 1,
+                    Category = "Oil Change",
+                },
+                new ServiceItem
+                {
+                    ItemId = 3,
+                    Item = "Cabin Filter",
+                    CategoryId = 1,
+                    Category = "Oil Change",
+                },
+                new ServiceItem
+                {
+                    ItemId = 4,
+                    Item = "Fuel Filter",
+                    CategoryId = 1,
+                    Category = "Oil Change",
+                },
+                new ServiceItem
+                {
+                    ItemId = 5,
+                    Item = "Water Pump",
+                    CategoryId = 2,
+                    Category = "Timing Belt",
+                },
+                new ServiceItem
+                {
+                    ItemId = 6,
+                    Item = "PK Belt",
+                    CategoryId = 2,
+                    Category = "Timing Belt",
+                },
+                new ServiceItem
+                {
+                    ItemId = 7,
+                    Item = "Wheel Aligment",
+                    CategoryId = 3,
+                    Category = "Wheel Aligment",
+                });
+
+            //*********** CARS **************//
+
+            builder.Entity<Cars>().HasData(
+                new Cars
+                {
+                    Id=1,
+                    Model= "Fiat Punto",
+                    Year=2005,
+                    FuelType="Petrol",
+                    EngineDisplacement=1242,
+                    EnginePower=60,
+                    VinNumber= "SFGDGF54164165",
+                    EngineNumber= "188A4000B6531651",
+                    UserId= "8e445865-a24d-4543-a6c6-9443d048cdb9",
+                    LicencePlate="SD-000-XX",
+                    IsActive=true
+                },
+                new Cars
+                {
+                    Id = 2,
+                    Model = "Yamaha MT-07",
+                    Year = 2014,
+                    FuelType = "Petrol",
+                    EngineDisplacement = 689,
+                    EnginePower = 75,
+                    VinNumber = "56161616DSGVFDS",
+                    EngineNumber = "15616DSFCDSW",
+                    UserId = "8e445865-a24d-4543-a6c6-9443d048cdb9",
+                    LicencePlate = "SD-00-000",
+                    IsActive = true
+                });
+
+            //*********** SERVICE **************//
+
+            builder.Entity<Service>().HasData(
+                new Service { 
+                    ServiceId = 1,
+                    ServiceDate= DateTime.Now,
+                    Mileage=78000,
+                    ServiceCost=10000,
+                    Notes="Selenia Gold",
+                    CarId = 1
+                });
+
+            //*********** CATEGORY_ITEMS **************//
+            builder.Entity<CategoryItems>().HasData(
+                new CategoryItems
+                {
+                    Id=1,
+                    ItemId=1,
+                    Items= "Air Filter",
+                    CategoryId=1,
+                    Category= "Oil Change",
+                    ServiceId=1  
+                },
+                new CategoryItems
+                {
+                    Id = 2,
+                    ItemId = 2,
+                    Items = "Oil Filter",
+                    CategoryId = 1,
+                    Category = "Oil Change",
+                    ServiceId = 1
+                });
         }
     }
 }

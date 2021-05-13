@@ -23,8 +23,7 @@ namespace Garage2.Models.Car
         [Display(Name = "VIN number")]
         public string VinNumber { get; set; }
         [Display(Name = "Chassis number")]
-        public string ChassisNumber { get; set; }
-        public int ServicesId { get; set; }
+        public string EngineNumber { get; set; }
         public string UserId { get; set; }
         [Display(Name = "Licence plate")]
         public string LicencePlate { get; set; }

@@ -42,6 +42,8 @@ namespace Garage2.Controllers
             }
 
             var categoryName = categoryRepository.AllCategories.Where(x => x.Category == cat).FirstOrDefault().Category;
+            var categoryId = categoryRepository.AllCategories.Where(x => x.Category == cat).FirstOrDefault().CategoryId;
+
 
             var items = itemRepositiry.AllItems;
 
@@ -49,6 +51,7 @@ namespace Garage2.Controllers
 
             if (!items.Any(x => x.Item == viewModel.ServiceItem.Item))
             {
+                modelItem.CategoryId = categoryId;
                 modelItem.Category = categoryName;
                 modelItem.Item = viewModel.ServiceItem.Item;
                 itemRepositiry.Add(modelItem);
@@ -71,6 +74,14 @@ namespace Garage2.Controllers
 
         public IActionResult UpdateCategory(ServiceCategory serviceCategory)
         {
+            var itemsToUpdate = itemRepositiry.AllItems.Where(x => x.CategoryId == serviceCategory.CategoryId).ToList();
+
+            foreach (var item in itemsToUpdate)
+            {
+                item.Category = serviceCategory.Category;
+                itemRepositiry.Update(item);
+            }
+
             categoryRepository.Update(serviceCategory);
             return RedirectToAction("Categories");
         }
