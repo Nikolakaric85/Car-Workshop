@@ -12,6 +12,7 @@ namespace Garage2.Models
         [Key]
         public int ItemId { get; set; }
         public string Item { get; set; }
+        public int CategoryId { get; set; }
         public string Category { get; set; }
         public List<CategoryItems> CategoryItems { get; set; }
 
