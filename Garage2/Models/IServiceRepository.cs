@@ -10,5 +10,6 @@ namespace Garage2.Models
         IEnumerable<Service> AllServices { get; }
         Service Add(Service service);
         Service Update(Service service);
+        Service Delete(int id);
     }
 }

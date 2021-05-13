@@ -72,12 +72,11 @@ namespace Garage2.Controllers
         [HttpGet]
         public IActionResult _LoginModalPartialView()
         {
-            //var model = new LoginViewModel();
-            return View("_Login");
+            return PartialView();
         }
 
-        [HttpGet]
-        public async Task<IActionResult> _Login(LoginViewModel model)
+        [HttpPost]
+        public async Task<IActionResult> _LoginModalPartialView(LoginViewModel model)
         {
             if (ModelState.IsValid)
             {
@@ -91,9 +90,7 @@ namespace Garage2.Controllers
 
                 ModelState.AddModelError(string.Empty, "Invalid login attempt");
             }
-
-            TempData["error"] = "errorrrr";
-            return View();
+            return PartialView();
         }
 
 

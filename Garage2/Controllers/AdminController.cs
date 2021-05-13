@@ -2,6 +2,7 @@
 using Garage2.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,12 +20,38 @@ namespace Garage2.Controllers
             this.roleManager = roleManager;
             this.userManager = userManager;
         }
-        public IActionResult Users()
+        public IActionResult Users(string searchTerm)
         {
-            var users = userManager.Users;   
-            return View(users);
+            if (searchTerm == null)
+            {
+                var users = userManager.Users;   
+                return View(users);
+            } else
+            {
+
+                var serchedUser = userManager.Users.Where(x => x.UserName.Contains(searchTerm) ||
+                                                                        x.LastName.Contains(searchTerm) ||
+                                                                        x.Email.Contains(searchTerm) ||
+                                                                        x.PhoneNumber.Contains(searchTerm));
+            return View(serchedUser);
+            }
+
         }
 
+
+        /*   var model = new CarUserViewModel();
+
+            if (searchTerm == null)
+            {
+                model.AppUsersEnumerable = userManager.Users;
+                return View(model);
+            }
+            else
+                model.AppUsersEnumerable = userManager.Users.Where(x => x.UserName.Contains(searchTerm)||
+                                                                        x.LastName.Contains(searchTerm)||
+                                                                        x.Email.Contains(searchTerm)||
+                                                                        x.PhoneNumber.Contains(searchTerm));
+            return View(model);*/
 
         [HttpGet]
         public IActionResult EditUser(string id)
@@ -37,9 +64,12 @@ namespace Garage2.Controllers
                 LastName = users.LastName,
                 Email = users.Email,
                 PhoneNumber = users.PhoneNumber,
-                LicencePlate = users.LicencePlate
-
+                LicencePlate = users.LicencePlate,
             };
+
+            var userRole = userManager.Users.FirstOrDefault(u => u.Id == id).RoleName;
+            ViewBag.roleName = new SelectList(roleManager.Roles, "Name","Name", users.RoleName);
+
             return View(model);
         }
 
@@ -62,8 +92,6 @@ namespace Garage2.Controllers
 
             var userRoles = await userManager.GetRolesAsync(user);          //roles for given user
 
-     
-
             if ((await roleManager.RoleExistsAsync(identityRole.Name)) == false && userRoles.Count == 0)             
             {
                    await roleManager.CreateAsync(identityRole);                            //Creates the specified role in the AspNetRoles => Id|Name|NormalizedName|ConcurrencyStamp
@@ -83,7 +111,7 @@ namespace Garage2.Controllers
 
             await userManager.UpdateAsync(user);
 
-            return RedirectToAction("Users", "admin");
+            return RedirectToAction("Users", "Admin");
         }
 
 

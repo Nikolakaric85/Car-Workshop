@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - Garage</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
     <link rel="stylesheet" href="~/css/site.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/css/bootstrap-select.min.css">      <!--https://developer.snapappointments.com/bootstrap-select/-->
 </head>
@@ -21,18 +22,56 @@
     <!-- Modal placeholder -->
     <div id="modal-placeholder"></div>
 
-    @{await Html.RenderPartialAsync("_RegisterModalPartialView", new RegisterViewModel());}  <!-- ima i dalje problem kada se ode na user stranicu nece da radi login i register -->
+    <!-- Modal for add new service -->
+    <div class="modal" tabindex="-1" id="form-modal">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title"></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <!-- Modal for add new car -->
+    <div class="modal" tabindex="-1" id="car-modal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title"></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+
+                </div>
+
+            </div>
+        </div>
+    </div>
 
 
-    @*@{await Html.RenderPartialAsync("_LoginModalPartialView", new LoginViewModel());}*@
 
-    
 
-    <footer class="border-top footer text-muted">
+    @{await Html.RenderPartialAsync("_RegisterModalPartialView", new RegisterViewModel());}
+
+
+    @{await Html.RenderPartialAsync("_LoginModalPartialView", new LoginViewModel());}
+
+
+
+    @*<footer class="border-top footer text-muted">
         <div class="container">
             &copy; 2020 - Garage2 - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>
-    </footer>
+    </footer>*@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/js/bootstrap-select.min.js"></script>

@@ -30,6 +30,14 @@ namespace Garage2.Models
             context.SaveChanges();
             return service;
         }
+
+        public Service Delete(int id)
+        {
+            Service service = context.Services.Find(id);
+            context.Services.Remove(service);
+            context.SaveChanges();
+            return null;
+        }
     }
 }
 

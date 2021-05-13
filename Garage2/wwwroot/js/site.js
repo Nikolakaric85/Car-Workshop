@@ -22,7 +22,7 @@ $(function () {
         event.preventDefault();
 
         var form = $(this).parents('.modal').find('form');
-        var actionUrl = form.attr('action');
+        var actionUrl = "/Account/_RegisterModalPartialView"
         var dataToSend = form.serialize();
 
         $.post(actionUrl, dataToSend).done(function (data) {
@@ -38,35 +38,72 @@ $(function () {
 
     //LOGIN
 
-    //$('#loginModal').click(function (event) {
-    //    var url = $(this).data('url')
-    //    event.preventDefault();
+    $('#loginModal').click(function (event) {
+        var url = $(this).data('url')
+        event.preventDefault();
 
-    //    $.get(url).done(function (data) {
-    //        placeholderElement.html(data);
-    //        placeholderElement.find('.modal').modal('show');
-    //    });
+        $.get(url).done(function (data) {
+            placeholderElement.html(data);
+            placeholderElement.find('.modal').modal('show');
+        });
 
-    //    placeholderElement.on('click', '[data-login="modalLogin"]', function (event) {
-    //        event.preventDefault();
+        placeholderElement.on('click', '[data-login="modalLogin"]', function (event) {
+            event.preventDefault();
 
-    //        var form = $(this).parents('.modal').find('form');
-    //        var actionUrl = form.attr('action');
-    //        var dataToSend = form.serialize();
+            var form = $(this).parents('.modal').find('form');
+            //var actionUrl = form.attr('action');
+            var actionUrl = "/Account/_LoginModalPartialView"
+            var dataToSend = form.serialize();
 
-    //        $.post(actionUrl, dataToSend).done(function (data) {
-    //            var newBody = $('.modal-body', data);
-    //            placeholderElement.find('.modal-body').replaceWith(newBody);
+            $.post(actionUrl, dataToSend).done(function (data) {
+                
+                var newBody = $('.modal-body', data);
+                placeholderElement.find('.modal-body').replaceWith(newBody);
 
-    //            var isValid = newBody.find('[name="IsValid"]').val() == 'True';
-    //            if (isValid) {
-    //                placeholderElement.find('.modal').modal('hide');
-    //                location.reload();
+                var isValid = newBody.find('[name="IsValid"]').val() == 'True';
+                if (isValid) {
+                    placeholderElement.find('.modal').modal('hide');
+                    location.reload();
                     
-    //            }
-    //        });
-    //    })
-    //})
+                }
+            });
+        })
+    })
+
+    //LOGIN FOR "YOUR SERVICE" NOT WORKING BECAUSE SAME ID IN NAVBAR
+
+    $('#loginModal2').click(function (event) {
+        var url = $(this).data('url')
+        event.preventDefault();
+
+        $.get(url).done(function (data) {
+            placeholderElement.html(data);
+            placeholderElement.find('.modal').modal('show');
+        });
+
+        placeholderElement.on('click', '[data-login="modalLogin"]', function (event) {
+            event.preventDefault();
+
+            var form = $(this).parents('.modal').find('form');
+            //var actionUrl = form.attr('action');
+            var actionUrl = "/Account/_LoginModalPartialView"
+            var dataToSend = form.serialize();
+
+            $.post(actionUrl, dataToSend).done(function (data) {
+
+                var newBody = $('.modal-body', data);
+                placeholderElement.find('.modal-body').replaceWith(newBody);
+
+                var isValid = newBody.find('[name="IsValid"]').val() == 'True';
+                if (isValid) {
+                    placeholderElement.find('.modal').modal('hide');
+                    location.reload();
+
+                }
+            });
+        })
+    })
+
 
    
 
@@ -77,86 +114,56 @@ $(function () {
             type: 'GET',
             url: url,
             success: function (res) {
-                
+                var url = window.location.pathname;                     //get curent URl
+                var id = url.substring(url.lastIndexOf('/') + 1);       //gat ID from url
+          
                 $("#form-modal .modal-body").html(res)
                 $("#form-modal .modal-title").html(title)
+                $("#carId").val(id)
                 $("#form-modal").modal('show')
                 $('.selectpicker').selectpicker();
 
             }
         })
-     )
-    
-    //LOGIN 2
+    )
 
-    login2 = (url,title) => (
-                
+    //  CREATE NEW CAR
+
+    createNewCar = (url,title) => (
         $.ajax({
             type: 'GET',
-            url:url,
+            url: url,
             success: function (res) {
-                $("#logReg .modal-title").html(title)
-                $("#logReg .modal-body").html(res)
-                $("#logReg").modal('show')
+                var url = window.location.pathname;                     //get curent URl
+                var id = url.substring(url.lastIndexOf('/') + 1);       //gat ID from url
+                
+                $("#car-modal .modal-body").html(res)
+                $("#car-modal .modal-title").html(title)
+                $("#userId").val(id)
+                $("#car-modal").modal('show')
             }
         })
     )
 
 
+    // SERVICE DETAILS 
 
-    log = () => (
+    serviceDetails = (url, title) => {
         $.ajax({
             type: 'GET',
-            url: "Account/_Login",
+            url: url,
             success: function (res) {
-                var err = $(this).text('@TempData["error"]')
-                if (err != null) {
-
-                    
-                //    $("#logReg .modal-title").html(title)
-                    $("#logReg .modal-body").html(res)
-                  
-                    $("#logReg").modal('show')
-
-                    //console.log('forma nije validna')
-                }
-                
-              
+                $("#serviceDetails .modal-body").html(res)
+                $("#serviceDetails .modal-title").html(title)
+                $("#serviceDetails").modal('show')
             }
         })
-    )
-
-
-    // res mi daje formu kada je on prvi u "success: function ( res, event)" u suprotnom vraca samo rec success
-
-
+    }
 
 });
    
 
        
-   
-//$("a#impersonate").click(function () {
-
-//    $.ajax({
-//        type: "POST",
-//        url: "@Url.Action("Impersonation", "UserRoles")",
-//        data: $('#form').serialize(),
-//        success: function (result) {
-//            if (result == "success") {
-//                $('#dialogDiv').modal('hide');
-
-//            } else {
-//                $('#dialogContent').html(result);
-//            }
-//        }
-//    });
-//});
-
-
-
-    
-
 
   
 

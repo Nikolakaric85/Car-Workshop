@@ -1,7 +1,10 @@
 ﻿using Garage2.Models;
+using Garage2.Models.Car;
 using Garage2.ViewModels;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Garage2.Controllers
@@ -12,98 +15,70 @@ namespace Garage2.Controllers
         private readonly IServiceItemRepositiry itemRepositiry;
         private readonly IServiceRepository serviceRepository;
         private readonly ICategoryItemsRepository categoryItemsRepository;
+        private readonly UserManager<AppUser> userManager;
+        private readonly ICarsRepository carsRepository;
 
-        public ServicesController(IServiceCategoryRepository categoryRepository, IServiceItemRepositiry itemRepositiry, IServiceRepository serviceRepository, ICategoryItemsRepository categoryItemsRepository)
+        public ServicesController(IServiceCategoryRepository categoryRepository,
+            IServiceItemRepositiry itemRepositiry,
+            IServiceRepository serviceRepository,
+            ICategoryItemsRepository categoryItemsRepository,
+            UserManager<AppUser> userManager,
+            ICarsRepository carsRepository
+            )
         {
             this.categoryRepository = categoryRepository;
             this.itemRepositiry = itemRepositiry;
             this.serviceRepository = serviceRepository;
             this.categoryItemsRepository = categoryItemsRepository;
-        }
-        public IActionResult Services()
-        {
-            //var model = new ServiceViewModel();
-            //model.ServiceItemsEnumerable = itemRepositiry.AllItems;
-            return View();
-        }
-
-        //  CATEGORIES 
-
-        public IActionResult CreateCategory(ServiceViewModel viewModel, string cat)
-        {
-            var category = categoryRepository.AllCategories;
-
-            var modelCategory = new ServiceCategory();
-
-            if (!category.Any(x => x.Category == cat))
-            {
-                modelCategory.Category = cat;
-                categoryRepository.Add(modelCategory);
-            }
-
-            var categoryName = categoryRepository.AllCategories.Where(x => x.Category == cat).FirstOrDefault().Category;
-
-            var items = itemRepositiry.AllItems;
-
-            var modelItem = new ServiceItem();
-
-            if (!items.Any(x => x.Item == viewModel.ServiceItem.Item))
-            {
-                modelItem.Category = categoryName;
-                modelItem.Item = viewModel.ServiceItem.Item;
-                itemRepositiry.Add(modelItem);
-            }
-
-            return RedirectToAction("Services");
-        }
-
-        public IActionResult EditCategory(CategoryItems categoryItems)
-        {
-            var cat = categoryRepository.AllCategories.Where(x => x.CategoryId == categoryItems.Id).FirstOrDefault();
-            var category = new ServiceCategory()
-            {
-                Category = cat.Category,
-                CategoryId = cat.CategoryId
-            };
-
-            return View(category);
-        }
-
-        public IActionResult UpdateCategory(ServiceCategory serviceCategory)
-        {
-            categoryRepository.Update(serviceCategory);
-            return RedirectToAction("Services");
-        }
-
-        //  ITEMS
-        public IActionResult EditItem(CategoryItems categoryItems)
-        {
-            var item = itemRepositiry.AllItems.Where(x => x.ItemId == categoryItems.Id).FirstOrDefault();
-
-            var model = new ServiceItem()
-            {
-                ItemId = item.ItemId,
-                Item = item.Item,
-                Category = item.Category
-            };
-
-            return View(model);
-        }
-
-        public IActionResult UpdateItem(ServiceItem serviceItem)
-        {
-            itemRepositiry.Update(serviceItem);
-            return RedirectToAction("Services");
-        }
-
-        public IActionResult DeleteItem(int id)
-        {
-            itemRepositiry.Delete(id);
-            return RedirectToAction("Services");
+            this.userManager = userManager;
+            this.carsRepository = carsRepository;
         }
 
         //  SERVICES
 
+        //Show all users 
+        public IActionResult Services(string searchTerm)
+        {
+            var model = new CarUserViewModel();
+
+            if (searchTerm == null)
+            {
+                model.AppUsersEnumerable = userManager.Users;
+                return View(model);
+            }
+            else
+            {
+
+                model.AppUsersEnumerable = userManager.Users.Where(x => x.UserName.Contains(searchTerm)||
+                                                                        x.LastName.Contains(searchTerm)||
+                                                                        x.Email.Contains(searchTerm)||
+                                                                        x.PhoneNumber.Contains(searchTerm));
+                return View(model);
+            }
+        }
+
+        //Show cars for curent user
+        public IActionResult UserCars(string id)
+        {
+            var model = new CarUserViewModel();
+            model.CarsEnumerable = carsRepository.AllCars.Where(x => x.UserId == id);
+
+            ViewBag.curentUser = userManager.Users.FirstOrDefault(x => x.Id == id).UserName;
+
+            return View(model);
+        }
+
+        //Show services for selected user car
+        public IActionResult ShowServices(int id)
+        {
+            var model = new ServiceViewModel();
+            model.ServiceEnumerable = serviceRepository.AllServices.Where(x => x.CarId == id);
+
+            ViewBag.carModel = carsRepository.AllCars.FirstOrDefault(x => x.Id == id).Model;
+
+            return View(model);
+        }
+        //Create new service
         [HttpGet]
         public IActionResult NewService(int id)
         {
@@ -129,7 +104,7 @@ namespace Garage2.Controllers
         }
 
 
-        public IActionResult AddNewService(ServiceViewModel serviceViewModel, string[] array)
+        public IActionResult AddNewService(ServiceViewModel serviceViewModel, string[] array, string returnUrl)
         {
             if (serviceViewModel.Service.ServiceId == 0) // ako je Service.ServiceId = 0 onda kreiraj nov servis ako ne onda ide update
             {
@@ -139,7 +114,9 @@ namespace Garage2.Controllers
                     ServiceDate = serviceViewModel.Service.ServiceDate,
                     Mileage = serviceViewModel.Service.Mileage,
                     ServiceCost = serviceViewModel.Service.ServiceCost,
-                    Notes = serviceViewModel.Service.Notes
+                    Notes = serviceViewModel.Service.Notes,
+                    CarId = serviceViewModel.Service.CarId
+
                 };
 
                 serviceRepository.Add(service);
@@ -164,7 +141,7 @@ namespace Garage2.Controllers
                     categoryItemsRepository.Add(categoryItem);
                 }
 
-                return RedirectToAction("Services");
+                return RedirectToAction("ShowServices", new { id = serviceViewModel.Service.CarId });
 
             }
             else // odavde ide update
@@ -200,8 +177,63 @@ namespace Garage2.Controllers
                     categoryItemsRepository.Add(categoryItem);
                 }
             }
-            return RedirectToAction("Services");
+
+            return RedirectToAction("ShowServices", new { id = serviceViewModel.Service.CarId });
         }
+
+        public IActionResult DeleteService(int Id)
+        {
+            var catItem = categoryItemsRepository.AllCategoryItems.Where(x => x.ServiceId == Id).Select(x => x.Id).ToList();
+
+            foreach (var id in catItem)
+            {
+                categoryItemsRepository.Delete(id);
+            }
+
+            var carId = serviceRepository.AllServices.FirstOrDefault(x => x.ServiceId == Id).CarId;
+
+            serviceRepository.Delete(Id);
+
+            return RedirectToAction("ShowServices", new { id = carId });
+        }
+    // CUSTOMER SERVICES
+
+        [HttpGet]
+        public IActionResult CustomerServices()
+        {
+            ViewBag.user = userManager.GetUserName(HttpContext.User);
+
+            var userId = userManager.GetUserId(HttpContext.User);
+            var usersCar = carsRepository.AllCars.Where(x => x.UserId == userId && x.IsActive == true);
+            ViewBag.userCars = new SelectList(usersCar,"Id","Model");
+
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult CustomerServices(int id)
+        {
+            ViewBag.user = userManager.GetUserName(HttpContext.User);
+
+            var userId = userManager.GetUserId(HttpContext.User);
+            var usersCar = carsRepository.AllCars.Where(x => x.UserId == userId && x.IsActive == true);
+            ViewBag.userCars = new SelectList(usersCar, "Id", "Model");
+
+            ViewBag.selectedCar = carsRepository.AllCars.FirstOrDefault(x => x.Id == id).Model;
+
+            var model = new ServiceViewModel();
+            model.ServiceEnumerable = serviceRepository.AllServices.Where(x => x.CarId == id);
+            return View(model);
+        }
+
+      
+        public IActionResult ServiceDetails(int id)
+        {            
+            var model = categoryItemsRepository.AllCategoryItems.Where(x => x.ServiceId == id);
+            return View("_ServiceDetails", model );
+        }
+
+
     }
 }
 

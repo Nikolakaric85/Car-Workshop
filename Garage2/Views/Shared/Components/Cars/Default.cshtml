@@ -1,0 +1,21 @@
+﻿@model CarUserViewModel
+<div class="row">
+    <div class="col-sm">
+
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <input asp-for="Cars.Id" class="form-control" hidden />
+
+
+
+        <div class="form-group">
+            <label asp-for="Cars.Model" class="control-label"></label>
+            <input asp-for="Cars.Model" class="form-control" />
+            <span asp-validation-for="Cars.Model" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Cars.Year" class="control-label"></label>
+            <input asp-for="Cars.Year" class="form-control" />
+            <span asp-validation-for="Cars.Year" class="text-danger"></span>
+        </div>
+    </div>
+</div>

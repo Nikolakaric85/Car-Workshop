@@ -4,14 +4,16 @@ using Garage2.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Garage2.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210506140615_addIsActiveToCarsModel")]
+    partial class addIsActiveToCarsModel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -93,46 +95,6 @@ namespace Garage2.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = "8e445865-a24d-4543-a6c6-9443d048cdb9",
-                            AccessFailedCount = 0,
-                            ConcurrencyStamp = "12b52da7-83c3-46b2-96f1-f4424e1bd1ec",
-                            Email = "admin@gmail.com",
-                            EmailConfirmed = false,
-                            LastName = "Admin",
-                            LicencePlate = "SD-000-XX",
-                            LockoutEnabled = false,
-                            NormalizedEmail = "ADMIN@GMAIL.COM",
-                            NormalizedUserName = "ADMIN",
-                            PasswordHash = "AQAAAAEAACcQAAAAEGHyc05WV4uZbAGRD47B/jyyRA6QgYYO1hE2tSbQP6eJQ6N+rvDF3nknbWFdbKYahw==",
-                            PhoneNumberConfirmed = false,
-                            RoleName = "Admin",
-                            SecurityStamp = "c38442bc-3c46-4408-8b5e-600e834857b3",
-                            TwoFactorEnabled = false,
-                            UserName = "Admin"
-                        },
-                        new
-                        {
-                            Id = "165412e8-86ab-4ade-b351-75494216e814",
-                            AccessFailedCount = 0,
-                            ConcurrencyStamp = "852a51cb-9eec-4862-954c-02a768db999e",
-                            Email = "user@gmail.com",
-                            EmailConfirmed = false,
-                            LastName = "User",
-                            LicencePlate = "SD-000-XX",
-                            LockoutEnabled = false,
-                            NormalizedEmail = "USER@GMAIL.COM",
-                            NormalizedUserName = "USER",
-                            PasswordHash = "AQAAAAEAACcQAAAAEF+VLqyfR2ppyo0Uzsxd6DMtyEtAq4RFqGkHJ8+vHmYhRYk5wBTjFwrRSd0cZdiKzA==",
-                            PhoneNumberConfirmed = false,
-                            RoleName = "User",
-                            SecurityStamp = "39323b16-7d98-460b-b969-d81d7b17c428",
-                            TwoFactorEnabled = false,
-                            UserName = "User"
-                        });
                 });
 
             modelBuilder.Entity("Garage2.Models.Car.Cars", b =>
@@ -299,22 +261,6 @@ namespace Garage2.Migrations
                         .HasFilter("[NormalizedName] IS NOT NULL");
 
                     b.ToTable("AspNetRoles");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = "2c5e174e-3b0e-446f-86af-483d56fd7210",
-                            ConcurrencyStamp = "787f027d-1c56-4b3e-b0ed-3fe2d7c7efa3",
-                            Name = "Admin",
-                            NormalizedName = "ADMIN"
-                        },
-                        new
-                        {
-                            Id = "f35b6367-1ecf-4ade-9e3b-85b81b55e4a8",
-                            ConcurrencyStamp = "4e575724-d997-4b7a-a14d-50ea627f18ce",
-                            Name = "User",
-                            NormalizedName = "USER"
-                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -400,18 +346,6 @@ namespace Garage2.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("AspNetUserRoles");
-
-                    b.HasData(
-                        new
-                        {
-                            UserId = "8e445865-a24d-4543-a6c6-9443d048cdb9",
-                            RoleId = "2c5e174e-3b0e-446f-86af-483d56fd7210"
-                        },
-                        new
-                        {
-                            UserId = "165412e8-86ab-4ade-b351-75494216e814",
-                            RoleId = "f35b6367-1ecf-4ade-9e3b-85b81b55e4a8"
-                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>

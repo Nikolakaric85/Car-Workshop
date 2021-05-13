@@ -1,0 +1,82 @@
+﻿@model CarUserViewModel
+@{ 
+    Layout = null;
+}
+<div class="row">
+    <div class="col">
+        <form>
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <input asp-for="Cars.Id" class="form-control" hidden />
+
+            <div class="form-group">
+                <label asp-for="Cars.UserId" class="control-label" hidden></label>
+                <input id="userId" asp-for="Cars.UserId" class="form-control" hidden />
+                <span asp-validation-for="Cars.UserId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Cars.Model" class="control-label"></label>
+                <input asp-for="Cars.Model" class="form-control" required />
+                <span asp-validation-for="Cars.Model" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Cars.Year" class="control-label"></label>
+                <input asp-for="Cars.Year" class="form-control" required />
+                <span asp-validation-for="Cars.Year" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Cars.FuelType" class="control-label"></label>
+                <input asp-for="Cars.FuelType" class="form-control" />
+                <span asp-validation-for="Cars.FuelType" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Cars.EngineDisplacement" class="control-label"></label>
+                <input asp-for="Cars.EngineDisplacement" class="form-control" />
+                <span asp-validation-for="Cars.EngineDisplacement" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Cars.EnginePower" class="control-label"></label>
+                <input asp-for="Cars.EnginePower" class="form-control" />
+                <span asp-validation-for="Cars.EnginePower" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Cars.VinNumber" class="control-label"></label>
+                <input asp-for="Cars.VinNumber" class="form-control text-uppercase" />
+                <span asp-validation-for="Cars.VinNumber" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Cars.ChassisNumber" class="control-label"></label>
+                <input asp-for="Cars.ChassisNumber" class="form-control text-uppercase" />
+                <span asp-validation-for="Cars.ChassisNumber" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Cars.LicencePlate" class="control-label"></label>
+                <input asp-for="Cars.LicencePlate" class="form-control text-uppercase" />
+                <span asp-validation-for="Cars.LicencePlate" class="text-danger"></span>
+            </div>
+
+            <div class="custom-control custom-switch">
+                <input type="checkbox" class="custom-control-input" id="customSwitch1" asp-for="Cars.IsActive">
+                <label class="custom-control-label" for="customSwitch1">Inactive/Active</label>
+            </div>
+
+            <br />
+
+            <div class="form-group">
+                @if (Model == null)
+                {
+                    <button class="btn btn-outline-secondary" data-dismiss="modal">Cancel</button>
+                    <button class="btn btn-outline-primary" asp-controller="Cars" asp-action="CreateCars">Create</button>
+                }
+                else
+                { 
+                    <button class="btn btn-outline-secondary" data-dismiss="modal">Cancel</button>
+                    <button class="btn btn-outline-primary" asp-controller="Cars" asp-action="UpdateCar" asp-route-id="@Model.Cars.Id">Update</button>
+                }
+
+
+
+            </div>
+        </form>
+    </div>
+</div>

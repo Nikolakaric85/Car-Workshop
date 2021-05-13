@@ -17,5 +17,7 @@ namespace Garage2.Models
         public string LicencePlate { get; set; }
         public string RoleName { get; set; }
 
+        
+
     }
 }

@@ -1,4 +1,5 @@
 using Garage2.Models;
+using Garage2.Models.Car;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -42,6 +43,8 @@ namespace Garage2
             services.AddScoped<IServiceCategoryRepository, ServiceCategoryRepository>();
             services.AddScoped<IServiceItemRepositiry, ServiceItemRepositiry>();
             services.AddScoped<ICategoryItemsRepository, CategoryItemsRepository>();
+
+            services.AddScoped<ICarsRepository, CarsRepository>();
 
             services.AddControllersWithViews();
 

@@ -1,0 +1,77 @@
+﻿@model ServiceViewModel
+
+<div class="row">
+    <div class="col-sm">
+        <h3>User: @ViewBag.user</h3>
+    </div>
+    <div class="col-sm">
+        @if(@ViewBag.selectedCar!=null)
+            {
+                <h3>Service for: @ViewBag.selectedCar</h3>
+            }
+    </div>
+</div>
+<br />
+
+<form method="post">
+    <select class="custom-select col-4" onchange="this.form.submit()" name="Id" asp-items="@ViewBag.userCars">
+        <option value="">Select your car</option>
+    </select>
+    <br />
+    <br />
+</form>
+
+
+<form>
+    @if (Model != null)
+    {
+
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th scope="col">Service Id</th>
+                    <th scope="col">Service Date</th>
+                    <th scope="col">Mileage</th>
+                    <th scope="col">Service Cost</th>
+                    <th scope="col">Notes</th>
+                    <th scope="col">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.ServiceEnumerable)
+                {
+                    <tr>
+                        <td>@item.ServiceId</td>
+                        <td>@item.ServiceDate</td>
+                        <td>@item.Mileage</td>
+                        <td>@item.ServiceCost</td>
+                        <td>@item.Notes</td>
+                        <td><a onclick="serviceDetails('@Url.Action("ServiceDetails","Services",new {id = item.ServiceId } ,Context.Request.Scheme)','Service Details')" class="btn btn-outline-primary">Details</a></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <p>Please select your car</p>
+    }
+
+</form>
+
+
+@*DETAILs MODAL*@
+<div class="modal border-info" tabindex="-1" id="serviceDetails">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Modal title</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+            </div>
+        </div>
+    </div>
+</div>

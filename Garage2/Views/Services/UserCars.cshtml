@@ -1,0 +1,131 @@
+﻿@model CarUserViewModel
+
+@{
+    ViewData["Title"] = "User Cars";
+}
+
+<div class="container">
+    <h3>User: @ViewBag.curentUser</h3>
+    <br />
+    <button class="btn btn-outline-primary" role="button" onclick="createNewCar('@Url.Action("AddCars","Cars")','Create new car')">Create new car</button>
+    <br />
+    <br />
+</div>
+
+<div class="container">
+
+    <ul class="nav nav-tabs" id="myTab" role="tablist">
+        <li class="nav-item" role="presentation">
+            <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Active vehicle</a>
+        </li>
+        <li class="nav-item" role="presentation">
+            <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Inactive vehicle</a>
+        </li>
+    </ul>
+    <div class="tab-content" id="myTabContent">
+        <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+
+            <div class="col p-0">
+                @if (Model.CarsEnumerable.Any())
+                {
+
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th scope="col">Car Id</th>
+                                <th scope="col">Car Model</th>
+                                <th scope="col">Licence plate</th>
+                                <th scope="col">Engine Displacement</th>
+                                <th scope="col">Engine Power</th>
+                                <th scope="col">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var car in Model.CarsEnumerable)
+                            {
+                                if (car.IsActive)
+                                {
+                                    <tr>
+                                        <td>@car.Id</td>
+                                        <td>@car.Model</td>
+                                        <td>@car.LicencePlate</td>
+                                        <td>@car.EngineDisplacement</td>
+                                        <td>@car.EnginePower</td>
+                                        <td>
+                                            <a class="btn btn-outline-primary" asp-controller="Services" asp-action="ShowServices" asp-route-id="@car.Id" role="button">Services</a>
+                                            <a class="btn btn-outline-primary" onclick="createNewCar('@Url.Action("EditCar","Cars",new {Id = car.Id } ,Context.Request.Scheme)','Update car')" role="button">Edit Car</a>
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                        </tbody>
+                    </table>
+                }
+                else
+                {
+                    <br />
+                    <p>User don't have any vehicle</p>
+                }
+            </div>
+        </div>
+
+
+
+        <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+
+            <div class="col">
+                @if (Model.CarsEnumerable.Any())
+                {
+
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th scope="col">Car Id</th>
+                                <th scope="col">Car Model</th>
+                                <th scope="col">Licence plate</th>
+                                <th scope="col">Engine Displacement</th>
+                                <th scope="col">Engine Power</th>
+                                <th scope="col">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var car in Model.CarsEnumerable)
+                            {
+                                if (!car.IsActive)
+                                {
+                                    <tr>
+                                        <td>@car.Id</td>
+                                        <td>@car.Model</td>
+                                        <td>@car.LicencePlate</td>
+                                        <td>@car.EngineDisplacement</td>
+                                        <td>@car.EnginePower</td>
+                                        <td>
+                                            <a class="btn btn-outline-primary" asp-controller="Services" asp-action="ShowServices" asp-route-id="@car.Id" role="button">Services</a>
+                                            <a class="btn btn-outline-primary" onclick="createNewCar('@Url.Action("EditCar","Cars",new {Id = car.Id } ,Context.Request.Scheme)','Update car')" role="button">Edit Car</a>
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                        </tbody>
+                    </table>
+                }
+                else
+                {
+                    <br />
+                    <p>User don't have any vehicle</p>
+                }
+
+
+
+            </div>
+
+        </div>
+
+
+    </div>
+
+
+
+
+</div>
+

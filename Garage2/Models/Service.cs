@@ -10,12 +10,17 @@ namespace Garage2.Models
     {
         [Key]
         public int ServiceId { get; set; }
+        [Required]
         [Display(Name = "Service Date")]
         public DateTime ServiceDate { get; set; }
+        [Required]
         public int Mileage { get; set; }
+        [Required]
         [Display(Name = "Service Cost")]
         public decimal ServiceCost { get; set; }
         public string Notes { get; set; }
+
+        public int CarId { get; set; }
         
        // public List<ServiceItem> ServiceItems { get; set; }
         public List<CategoryItems> CategoryItems { get; set; }

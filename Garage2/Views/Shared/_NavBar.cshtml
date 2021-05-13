@@ -1,37 +1,63 @@
 ﻿@using Microsoft.AspNetCore.Identity
 @inject SignInManager<AppUser> signInManager
 
+    <div class="container mt-2 mb-0">
+        
+            <div class="row">
+                <i class="bi bi-telephone mr-1"></i>
+                <p class="mr-2">+381-026-123-456</p>
+                <i class="bi bi-geo-alt mr-1"></i>
+                <p>Drvarska 1, Smederevo</p>
+            </div>
+    </div>
 
-<nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+
+<nav class="navbar navbar-expand-sm navbar-toggleable-sm mb-3">
     <div class="container">
-        <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Garage</a>
+        @*<a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Garage</a>*@
+        <img src="~/images/Logo-Karic-CB.png" class="img-thumbnail border-0" style="max-width:10%" alt="...">
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                 aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
             <ul class="navbar-nav flex-grow-1">
-                <li class="nav-item">
-                    <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
 
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link text-dark" asp-area="" asp-controller="Services" asp-action="Services">Services</a>
-
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link text-dark" asp-area="" asp-controller="admin" asp-action="Users">Users</a>
-                </li>
-
-
-                @if (signInManager.IsSignedIn(User))                            //www.youtube.com/watch?v=YLAHIZmO2PI
+                @if (signInManager.IsSignedIn(User) && User.IsInRole("User"))                            //www.youtube.com/watch?v=YLAHIZmO2PI
                 {
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" asp-area="" asp-controller="Services" asp-action="CustomerServices">Your Service</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" id="logout" asp-area="" asp-controller="Account" asp-action="Logout">Logout  @User.Identity.Name</a>
+                    </li>
+                }
+                else if (signInManager.IsSignedIn(User) && User.IsInRole("Admin"))
+                {
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" asp-area="" asp-controller="Services" asp-action="Services">Services</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" asp-area="" asp-controller="Categories" asp-action="Categories">Categories</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" asp-area="" asp-controller="admin" asp-action="Users">Users</a>
+                    </li>
                     <li class="nav-item">
                         <a class="nav-link text-dark" id="logout" asp-area="" asp-controller="Account" asp-action="Logout">Logout  @User.Identity.Name</a>
                     </li>
                 }
                 else
                 {
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                    </li>
                     <li class="nav-item">
                         <a class="nav-link text-dark" asp-area="" id="registerModal" data-toggle="ajax-modal" data-target="#add-contact" data-url="@Url.ActionLink("_RegisterModalPartialView","Account")">Register</a>
                     </li>
@@ -40,14 +66,14 @@
                     </li>
                 }
 
-                <li class="nav-item">
-                    <button class="btn btn-link text-dark" style="text-decoration:none"  asp-area=""  onclick="login2('@Url.Action("_LoginModalPartialView","Account",Context.Request.Scheme)', 'Login')">Login 2</button>
-                </li>
-
-                @*onclick="showPopup('@Url.Action("NewService", "Services", new { id = item.ServiceId }, Context.Request.Scheme)','Update Service')"*@
             </ul>
         </div>
     </div>
 </nav>
 
 
+<style>
+    a{
+        font-size:1.25rem
+    }
+</style>
